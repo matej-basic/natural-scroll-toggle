@@ -1,0 +1,57 @@
+name: ci
+
+# Linux tests and lint run in containers, the same ones compose.yaml uses.
+# The macOS job builds the real app on a GitHub macOS runner.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-linux:
+    name: tests (Linux)
+    runs-on: ubuntu-latest
+    container: swift:6.1
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift test --scratch-path /tmp/linux-build
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: shellcheck
+        run: docker compose run --rm lint-shell
+      - name: actionlint
+        run: docker compose run --rm lint-actions
+      - name: swift-format
+        run: docker compose run --rm lint-swift
+
+  build-macos:
+    name: build and test (macOS)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests
+        run: swift test
+      - name: Build the app
+        run: ./build.sh
+      - name: Verify signature and Info.plist
+        run: |
+          codesign --verify --verbose=2 build/NaturalScrollToggle.app
+          plutil -lint build/NaturalScrollToggle.app/Contents/Info.plist
+      - name: Smoke test the binary
+        run: |
+          BIN=build/NaturalScrollToggle.app/Contents/MacOS/NaturalScrollToggle
+          "$BIN" --backend
+          "$BIN" --status
+          "$BIN" --devices
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NaturalScrollToggle-app
+          path: build/NaturalScrollToggle.app
