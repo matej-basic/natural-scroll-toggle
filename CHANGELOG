@@ -1,0 +1,32 @@
+# Changelog
+
+All notable changes to this project are documented in this file. The format
+follows Keep a Changelog.
+
+## 0.2.0 - 2026-10-21
+
+### Added
+- Automatic switching: natural scrolling is turned off while a USB or Bluetooth
+  mouse is connected, and the previous setting comes back when the last one
+  goes away. Off by default.
+- "Pointing devices" submenu listing what the app sees, with a checkbox to make
+  it ignore a device. Rejected devices are greyed out with the reason.
+- `ScrollCore` library with the device filter and the auto-switch policy, plus
+  unit tests that run on macOS and Linux.
+- `--devices` and `--backend` command line options.
+- One-line installer (`install.sh`), Homebrew cask, GitHub Actions for CI and
+  releases, Docker services for tests and lint, `Makefile`.
+
+### Changed
+- `./build.sh install` now does the local install into `/Applications`.
+  `install.sh` downloads the latest release instead.
+
+## 0.1.0 - 2026-10-21
+
+### Added
+- Menu bar app with a "Natural scrolling" checkbox. The change applies at once,
+  without logging out.
+- Launch at login.
+- `--status`, `--toggle` and `--set on|off` command line options.
+- `build.sh`, which builds the Swift package and packages an ad-hoc signed app
+  bundle.
