@@ -1,6 +1,6 @@
 cask "natural-scroll-toggle" do
   version "0.2.0"
-  sha256 "0000000000000000000000000000000000000000000000000000000000000000"
+  sha256 "6e8cec6bb96cac42051c2a6c93c1974ea398776d421cfa5a0ac86ff1259b2cfa"
 
   url "https://github.com/matej-basic/natural-scroll-toggle/releases/download/v#{version}/NaturalScrollToggle-#{version}.zip"
   name "Natural Scroll Toggle"
