@@ -1,0 +1,8 @@
+.build/
+build/
+*.zip
+.DS_Store
+SHA256SUMS
+.swiftpm/
+xcuserdata/
+.claude/settings.local.json
